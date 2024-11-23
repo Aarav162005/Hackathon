@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Hospital Directory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #0056b3;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #003d80;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        .doctor-category {
+            background-color: #e3f2fd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px 0;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .surgery-type {
+            background-color: #e8f5e9;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 5px 3px;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .hospital-type {
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 5px;
+        }
+
+        .filters {
+            background-color: white;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-group {
+            margin: 10px 0;
+        }
+
+        .filter-group label {
+            margin-right: 10px;
+        }
+
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .search-form {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-form input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Indian Hospital Directory</h1>
+        <p>Your one-stop platform for unbiased information on hospitals and surgeries in India</p>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#hospitals">Hospitals</a>
+        <a href="#doctors">Doctors</a>
+        <a href="#treatments">Treatments</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+
+    <div class="search-form">
+        <form action="/search" method="get">
+            <input type="text" name="q" placeholder="Search for treatments, hospitals, or doctors...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="container" id="doctors">
+        <h2>Doctors</h2>
+        <div class="filters">
+            <h3>Filters</h3>
+            <div class="filter-group">
+                <label>Hospital Category:</label>
+                <select>
+                    <option>All</option>
+                    <option>Government</option>
+                    <option>Private</option>
+                    <option>Multi-Specialty</option>
+                    <option>Super-Specialty</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Surgery Type:</label>
+                <select>
+                    <option>All</option>
+                    <option>Cardiac</option>
+                    <option>Orthopedic</option>
+                    <option>Neurology</option>
+                    <option>Cosmetic</option>
+                    <option>General</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Dr. Ajit Kumar</h3>
+            <div class="hospital-type">Hospital Category: Government & Multi-Specialty</div>
+            <p>Primary Hospital: Safdarjung Hospital</p>
+            <p>Specialist: Cardiology</p>
+            <p>Experience: 15 years</p>
+            <div>
+                <span class="surgery-type">Bypass Surgery</span>
+                <span class="surgery-type">Angioplasty</span>
+                <span class="surgery-type">Heart Valve Replacement</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Dr. Vanaj Mathur</h3>
+            <div class="hospital-type">Hospital Category: Private & Super-Specialty</div>
+            <p>Primary Hospital: Fortis Hospital</p>
+            <p>Specialist: Cosmetic Surgery</p>
+            <p>Experience: 10 years</p>
+            <div>
+                <span class="surgery-type">Rhinoplasty</span>
+                <span class="surgery-type">Liposuction</span>
+                <span class="surgery-type">Face Lift</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Dr. Priya Singh</h3>
+            <div class="hospital-type">Hospital Category: Private & Multi-Specialty</div>
+            <p>Primary Hospital: Apollo Hospital</p>
+            <p>Specialist: Neurosurgery</p>
+            <p>Experience: 12 years</p>
+            <div>
+                <span class="surgery-type">Brain Tumor</span>
+                <span class="surgery-type">Spine Surgery</span>
+                <span class="surgery-type">Cerebral Surgery</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="hospitals">
+        <h2>Hospitals</h2>
+        <div class="card">
+            <h3>Fortis Hospital</h3>
+            <div class="hospital-type">Private & Super-Specialty</div>
+            <p>Specialties: Cardiology, Neurology, Cosmetic Surgery</p>
+            <p>Location: Gurugram</p>
+        </div>
+        <div class="card">
+            <h3>Safdarjung Hospital</h3>
+            <div class="hospital-type">Government & Multi-Specialty</div>
+            <p>Specialties: Orthopedics, Oncology, Gastroenterology</p>
+            <p>Location: Delhi</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Indian Hospital Directory. All rights reserved.</p>
+    </footer>
+</body>
+</html>
