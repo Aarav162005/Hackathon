@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
-
-app = Flask(__name__,template_folder='./')
+app = Flask(__name__, template_folder='./')
 
 # Sample data (usually stored in a database)
 hospitals = [
@@ -21,7 +20,7 @@ treatments = [
 # Home route
 @app.route('/')
 def home():
-    return render_template('Hack2.html', hospitals=hospitals, doctors=doctors, treatments=treatments)
+    return render_template('Anvi.html', hospitals=hospitals, doctors=doctors, treatments=treatments)
 
 # Search route
 @app.route('/search', methods=['GET'])
@@ -33,8 +32,10 @@ def search():
         'doctors': [doctor for doctor in doctors if query.lower() in doctor['name'].lower() or query.lower() in doctor['specialty'].lower()],
         'treatments': [treatment for treatment in treatments if query.lower() in treatment['name'].lower()],
     }
-    print("What up.")
-    return render_template('Hack2.html', hospitals=search_results['hospitals'], doctors=search_results['doctors'], treatments=search_results['treatments'])
+    
+   
+    
+    return render_template('Anvi.html', hospitals=search_results['hospitals'], doctors=search_results['doctors'], treatments=search_results['treatments'],)
 
 if __name__ == '__main__':
     app.run(debug=True)

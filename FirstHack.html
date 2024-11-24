@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Hospital Directory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #0056b3;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #003d80;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #007bff;
+        }
+
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .search-form {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .search-form input[type="text"] {
+            width: 60%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Indian Hospital Directory</h1>
+        <p>Your one-stop platform for unbiased information on hospitals and surgeries in India</p>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#hospitals">Hospitals</a>
+        <a href="#doctors">Doctors</a>
+        <a href="#treatments">Treatments</a>
+        <a href="#contact">Contact Us</a>
+    </nav>
+
+    <div class="search-form">
+        <form action="/redirect" method="POST">
+            <input type="text" name="query" placeholder="Search for treatments, hospitals, or doctors...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="container" id="home">
+        <h2>Welcome to Indian Hospital Directory</h2>
+        <p>We provide comprehensive details about hospitals, treatments, doctors, and associated costs to help you make informed decisions for your healthcare needs in India.</p>
+    </div>
+
+    {% if query %}
+    <div class="container">
+        <h2>Search Results for "{{ query }}"</h2>
+        {% if search_results.hospitals %}
+        <h3>Hospitals</h3>
+        {% for hospital in search_results.hospitals %}
+        <div class="card">
+            <h3>{{ hospital.name }}</h3>
+            <p>Specialties: {{ hospital.specialties }}</p>
+            <p>Location: {{ hospital.location }}</p>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No hospitals found.</p>
+        {% endif %}
+
+        {% if search_results.doctors %}
+        <h3>Doctors</h3>
+        {% for doctor in search_results.doctors %}
+        <div class="card">
+            <h3>{{ doctor.name }}</h3>
+            <p>Specialty: {{ doctor.specialty }}</p>
+            <p>Experience: {{ doctor.experience }}</p>
+        </

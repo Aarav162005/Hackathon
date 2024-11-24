@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Information System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        .search-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .results-container {
+            margin-top: 20px;
+        }
+        .result-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .section-title {
+            margin: 20px 0 10px 0;
+            font-weight: bold;
+        }
+        .real-time-results {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+            width: 100%;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <h1>Healthcare Information System</h1>
+        
+        <!-- Search Form -->
+        <form action="{{ url_for('search') }}" method="GET">
+            <input type="text" 
+                   name="q" 
+                   id="searchInput"
+                   class="search-box" 
+                   placeholder="Search for hospitals, doctors, or treatments..."
+                   value="{{ query if query else '' }}">
+        </form>
+        
+        <!-- Real-time search results -->
+        <div id="realTimeResults" class="real-time-results"></div>
+
+        <!-- Search Results -->
+        <div class="results-container">
+            {% if query %}
+                <h2>Search Results for: {{ query }}</h2>
+                
+                {% if hospitals %}
+                    <div class="section-title">Hospitals</div>
+                    {% for hospital in hospitals %}
+                        <div class="result-item">
+                            <h3>{{ hospital.name }}</h3>
+                            <p>Location: {{ hospital.location }}</p>
+                            <p>Specialties: {{ hospital.specialties }}</p>
+                            <a href="{{ url_for('hospital_details', hospital_name=hospital.name) }}">View Details</a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if doctors %}
+                    <div class="section-title">Doctors</div>
+                    {% for doctor in doctors %}
+                        <div class="result-item">
+                            <h3>{{ doctor.name }}</h3>
+                            <p>Specialty: {{ doctor.specialty }}</p>
+                            <p>Experience: {{ doctor.experience }}</p>
+                            <a href="{{ url_for('doctor_details', doctor_name=doctor.name) }}">View Details</a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if treatments %}
+                    <div class="section-title">Treatments</div>
+                    {% for treatment in treatments %}
+                        <div class="result-item">
+                            <h3>{{ treatment.name }}</h3>
+                            <p>Cost: {{ treatment.cost }}</p>
+                            <p>Top Hospitals: {{ treatment.top_hospitals }}</p>
+                            <a href="{{ url_for('treatment_details', treatment_name=treatment.name) }}">View Details</a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% if not hospitals and not doctors and not treatments %}
+                    <p>No results found for "{{ query }}"</p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const realTimeResults = document.getElementById('realTimeResults');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            
+            if (query.length < 2) {
+                realTimeResults.style.display = 'none';
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                fetch(`/api/search?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let resultsHtml = '';
+                        
+                        if (data.hospitals.length > 0) {
+                            resultsHtml += '<div class="section-title">Hospitals</div>';
+                            data.hospitals.forEach(hospital => {
+                                resultsHtml += `
+                                    <div class="result-item">
+                                        <a href="/hospital/${encodeURIComponent(hospital.name)}">
+                                            ${hospital.name} - ${hospital.location}
+                                        </a>
+                                    </div>`;
+                            });
+                        }
+
+                        if (data.doctors.length > 0) {
+                            resultsHtml += '<div class="section-title">Doctors</div>';
+                            data.doctors.forEach(doctor => {
+                                resultsHtml += `
+                                    <div class="result-item">
+                                        <a href="/doctor/${encodeURIComponent(doctor.name)}">
+                                            ${doctor.name} - ${doctor.specialty}
+                                        </a>
+                                    </div>`;
+                            });
+                        }
+
+                        if (data.treatments.length > 0) {
+                            resultsHtml += '<div class="section-title">Treatments</div>';
+                            data.treatments.forEach(treatment => {
+                                resultsHtml += `
+                                    <div class="result-item">
+                                        <a href="/treatment/${encodeURIComponent(treatment.name)}">
+                                            ${treatment.name}
+                                        </a>
+                                    </div>`;
+                            });
+                        }
+
+                        if (resultsHtml === '') {
+                            resultsHtml = '<div class="result-item">No results found</div>';
+                        }
+
+                        realTimeResults.innerHTML = resultsHtml;
+                        realTimeResults.style.display = 'block';
+                    });
+            }, 300);
+        });
+
+        // Hide results when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!searchInput.contains(event.target) && !realTimeResults.contains(event.target)) {
+                realTimeResults.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
